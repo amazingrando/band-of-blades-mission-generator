@@ -1,0 +1,66 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title>Band of Blades Mission Generator</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="row">
+      <div class="col mt-5">
+        <h1>Band of Blades Mission Generator</h1>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+            <label for="commandersFocus">Commander's Choice:</label>
+            <select class="form-control" name="commandersFocus" id="commandersFocus">
+              <option value="">Choose One:</option>
+              <option value="assualt">Assualt</option>
+              <option value="recon">Recon</option>
+              <option value="religious">Religious</option>
+              <option value="supply">Supply</option>
+            </select>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="form-group">
+              <label for="gmChoice">GM's Choice:</label>
+              <select class="form-control" name="gmChoice" id="gmChoice">
+                <option value="">Choose One:</option>
+                <option value="assualt">Assualt</option>
+                <option value="recon">Recon</option>
+                <option value="religious">Religious</option>
+                <option value="supply">Supply</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary mt-5" id="generateMissions" disabled>Generate Missions</button>
+      </div>
+    </div>
+    <div class="row mt-5" id="missions"></div>
+  </div>
+
+  <script src="js/main.js"></script>
+
+
+</body>
+
+</html>
