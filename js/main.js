@@ -1,39 +1,39 @@
 const missionCount = {
   1: {
-    number: 3,
-    specialist: 0,
-    favor: 0,
-    specialMission: 0,
+    count: 3,
+    specialist: false,
+    favor: false,
+    specialMission: false,
   },
   2: {
-    number: 3,
-    specialist: 0,
-    favor: 0,
-    specialMission: 0,
+    count: 3,
+    specialist: false,
+    favor: false,
+    specialMission: false,
   },
   3: {
-    number: 3,
-    specialist: 1,
-    favor: 0,
-    specialMission: 0,
+    count: 3,
+    specialist: true,
+    favor: false,
+    specialMission: false,
   },
   4: {
-    number: 2,
-    specialist: 0,
-    favor: 0,
-    specialMission: 0,
+    count: 2,
+    specialist: false,
+    favor: false,
+    specialMission: false,
   },
   5: {
-    number: 3,
-    specialist: 0,
-    favor: 1,
-    specialMission: 0,
+    count: 3,
+    specialist: false,
+    favor: true,
+    specialMission: false,
   },
   6: {
-    number: 3,
-    specialist: 0,
-    favor: 0,
-    specialMission: 1,
+    count: 3,
+    specialist: false,
+    favor: false,
+    specialMission: true,
   },
 };
 
@@ -142,8 +142,27 @@ const missions = {
       "None.",
     ],
   },
-  commandersChoice: {},
-  gmChoice: {},
+};
+
+const favors = ["Holy", "Mystic", "Glory", "Knowledge", "Mercy", "Wild"];
+
+const specialistTypes = [
+  "Heavy",
+  "Medic",
+  "Scout",
+  "Sniper",
+  "Officer",
+  "Alchemist or Mercy",
+];
+
+const randomNumber = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max + 1);
+  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+};
+
+const randomFromArray = (array) => {
+  return array[Math.floor(Math.random() * array.length)];
 };
 
 const randomKey = function (obj) {
@@ -151,31 +170,27 @@ const randomKey = function (obj) {
   return keys[(keys.length * Math.random()) << 0];
 };
 
-const commandersChoice = () => {
-  const cmdchoice = document.getElementById("commandersFocus");
-  return cmdchoice.value;
-};
-
 const gmChoice = () => {
   const gmChoice = document.getElementById("gmChoice");
   return gmChoice.value;
 };
 
-const randomMission = (count) => {
+const randomMission = (obj, commandersChoice) => {
+  const { count, specialist, favor, specialMission } = obj;
   let missionList = [];
+  console.log(commandersChoice);
+
+  const specialistMissionNumber = specialist ? randomNumber(1, count) : false;
+  const favorMissionNumber = favor ? randomNumber(1, count) : false;
+  // const specialMissionMissionNumber = specialMission
+  //   ? randomNumber(1, count)
+  //   : false;
 
   for (i = 0; i < count; i++) {
     let missionType = randomKey(missions);
     let commandersFocus = false;
     let gmFocus = false;
 
-    if (missionType == "commandersChoice") {
-      missionType = commandersChoice();
-      commandersFocus = true;
-    } else if (missionType == "gmChoice") {
-      missionType = gmChoice();
-      gmFocus = true;
-    }
     const mission = missions[missionType];
 
     const type = mission.type[(mission.type.length * Math.random()) | 0];
@@ -192,23 +207,37 @@ const randomMission = (count) => {
       ...{ penalties: penalties },
       ...{ commandersFocus: commandersFocus },
       ...{ gmFocus: gmFocus },
+      ...{
+        specialist: specialistMissionNumber == i ? true : false,
+      },
+      ...{ favor: favorMissionNumber == i ? true : false },
     };
   }
   return missionList;
 };
 
 const createMissions = () => {
-  const numberOfMissions = missionCount[randomKey(missionCount)].number;
-  const missions = randomMission(numberOfMissions);
+  const cmdChoice = document.getElementById("commandersFocus").value
+    ? document.getElementById("commandersFocus").value
+    : false;
+  const key = cmdChoice ? "6" : randomKey(missionCount);
+  const missions = randomMission(missionCount[key], cmdChoice);
 
-  let i = 0;
   let template = "";
-  missions.map((v, i) => {
+  missions.map((v, i = 0) => {
     const focus = v.commandersFocus
       ? `<span class="badge badge-primary">Focus</span>`
       : "";
     const gmFocus = v.gmFocus
       ? `<span class="badge badge-danger">GM Choice</span>`
+      : "";
+    const extraSpecialist = v.specialist
+      ? `<br/>This mission requires another specialist. Perhaps a ${randomFromArray(
+          specialistTypes
+        )}?`
+      : "";
+    const favor = v.favor
+      ? `<br/>This mission gives ${randomFromArray(favors)} Favor.`
       : "";
     template += `<div class="col"><div class="card">
     <div class="card-body">
@@ -217,6 +246,8 @@ const createMissions = () => {
         <strong>Type:</strong> ${v.type} <br/>
         <strong>Rewards:</strong> ${v.rewards}<br/>
         <strong>Penalties:</strong> ${v.penalties}
+        ${extraSpecialist}
+        ${favor}
       </p>
     </div>
   </div></div>`;
@@ -225,16 +256,6 @@ const createMissions = () => {
   document.getElementById("missions").innerHTML = template;
 };
 
-const activateButton = () => {
-  if (gmChoiceButton.value !== "" && commandersFocusButton.value != "") {
-    generateMissionsButton.disabled = false;
-  }
-};
-
-const gmChoiceButton = document.getElementById("gmChoice");
-gmChoiceButton.addEventListener("change", activateButton);
-const commandersFocusButton = document.getElementById("commandersFocus");
-commandersFocusButton.addEventListener("change", activateButton);
-
+const gmChoiceValue = document.getElementById("gmChoice");
 const generateMissionsButton = document.getElementById("generateMissions");
 generateMissionsButton.addEventListener("click", createMissions);
