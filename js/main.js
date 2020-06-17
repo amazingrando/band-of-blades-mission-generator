@@ -165,7 +165,7 @@ const randomFromArray = (array) => {
   return array[Math.floor(Math.random() * array.length)];
 };
 
-const randomKey = function (obj) {
+const randomKey = (obj) => {
   var keys = Object.keys(obj);
   return keys[(keys.length * Math.random()) << 0];
 };
@@ -175,13 +175,29 @@ const gmChoice = () => {
   return gmChoice.value;
 };
 
-const randomMission = (obj, commandersChoice) => {
-  const { count, specialist, favor, specialMission } = obj;
-  let missionList = [];
-  console.log(commandersChoice);
+const resolveMissionNumbers = (specialist, favor, count) => {
+  const values = [...Array(count).keys()];
+
+  // https://stackoverflow.com/questions/5767325/how-can-i-remove-a-specific-item-from-an-array
+  // values = values.filter(item => item !== usedNumber)
 
   const specialistMissionNumber = specialist ? randomNumber(1, count) : false;
   const favorMissionNumber = favor ? randomNumber(1, count) : false;
+
+  return { specialistMissionNumber, favorMissionNumber };
+};
+
+const randomMission = (obj, commandersChoice) => {
+  const { count, specialist, favor, specialMission } = obj;
+  let missionList = [];
+
+  const { specialistMissionNumber, favorMissionNumber } = resolveMissionNumbers(
+    specialist,
+    favor,
+    count
+  );
+  console.log(specialistMissionNumber);
+  console.log(favorMissionNumber);
   // const specialMissionMissionNumber = specialMission
   //   ? randomNumber(1, count)
   //   : false;
