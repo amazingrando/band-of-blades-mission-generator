@@ -170,34 +170,12 @@ const randomKey = (obj) => {
   return keys[(keys.length * Math.random()) << 0];
 };
 
-const gmChoice = () => {
-  const gmChoice = document.getElementById("gmChoice");
-  return gmChoice.value;
-};
-
-const resolveMissionNumbers = (specialist, favor, count) => {
-  const values = [...Array(count).keys()];
-
-  // https://stackoverflow.com/questions/5767325/how-can-i-remove-a-specific-item-from-an-array
-  // values = values.filter(item => item !== usedNumber)
-
-  const specialistMissionNumber = specialist ? randomNumber(1, count) : false;
-  const favorMissionNumber = favor ? randomNumber(1, count) : false;
-
-  return { specialistMissionNumber, favorMissionNumber };
-};
-
 const randomMission = (obj, commandersChoice) => {
   const { count, specialist, favor, specialMission } = obj;
   let missionList = [];
 
-  const { specialistMissionNumber, favorMissionNumber } = resolveMissionNumbers(
-    specialist,
-    favor,
-    count
-  );
-  console.log(specialistMissionNumber);
-  console.log(favorMissionNumber);
+  const specialistMissionNumber = specialist ? randomNumber(1, count) : false;
+  const favorMissionNumber = favor ? randomNumber(1, count) : false;
   // const specialMissionMissionNumber = specialMission
   //   ? randomNumber(1, count)
   //   : false;
@@ -224,29 +202,30 @@ const randomMission = (obj, commandersChoice) => {
       ...{ commandersFocus: commandersFocus },
       ...{ gmFocus: gmFocus },
       ...{
-        specialist: specialistMissionNumber == i ? true : false,
+        specialist: specialistMissionNumber === i ? true : false,
       },
-      ...{ favor: favorMissionNumber == i ? true : false },
+      ...{ favor: favorMissionNumber === i ? true : false },
     };
   }
   return missionList;
 };
 
 const createMissions = () => {
-  const cmdChoice = document.getElementById("commandersFocus").value
-    ? document.getElementById("commandersFocus").value
-    : false;
-  const key = cmdChoice ? "6" : randomKey(missionCount);
-  const missions = randomMission(missionCount[key], cmdChoice);
+  // const cmdChoice = document.getElementById("commandersFocus").value
+  //   ? document.getElementById("commandersFocus").value
+  //   : false;
+  // const key = cmdChoice ? "6" : randomKey(missionCount);
+  const key = randomKey(missionCount);
+  const missions = randomMission(missionCount[key]);
 
   let template = "";
-  missions.map((v, i = 0) => {
-    const focus = v.commandersFocus
-      ? `<span class="badge badge-primary">Focus</span>`
-      : "";
-    const gmFocus = v.gmFocus
-      ? `<span class="badge badge-danger">GM Choice</span>`
-      : "";
+  missions.map((v) => {
+    // const focus = v.commandersFocus
+    //   ? `<span class="badge badge-primary">Focus</span>`
+    //   : "";
+    // const gmFocus = v.gmFocus
+    //   ? `<span class="badge badge-danger">GM Choice</span>`
+    //   : "";
     const extraSpecialist = v.specialist
       ? `<br/>This mission requires another specialist. Perhaps a ${randomFromArray(
           specialistTypes
@@ -257,7 +236,7 @@ const createMissions = () => {
       : "";
     template += `<div class="col"><div class="card">
     <div class="card-body">
-      <h5 class="card-title text-uppercase">${v.missionType} ${focus}${gmFocus}</h5>
+      <h5 class="card-title text-uppercase">${v.missionType}</h5>
       <p class="card-text">
         <strong>Type:</strong> ${v.type} <br/>
         <strong>Rewards:</strong> ${v.rewards}<br/>
@@ -267,11 +246,9 @@ const createMissions = () => {
       </p>
     </div>
   </div></div>`;
-    i++;
   });
   document.getElementById("missions").innerHTML = template;
 };
 
-const gmChoiceValue = document.getElementById("gmChoice");
 const generateMissionsButton = document.getElementById("generateMissions");
 generateMissionsButton.addEventListener("click", createMissions);
