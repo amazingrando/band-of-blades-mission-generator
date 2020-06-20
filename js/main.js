@@ -170,17 +170,16 @@ const randomKey = (obj) => {
   return keys[(keys.length * Math.random()) << 0];
 };
 
-const randomMission = (obj, commandersChoice) => {
+const randomMission = (obj, cmdChoice) => {
   const { count, specialist, favor, specialMission } = obj;
   let missionList = [];
 
   const specialistMissionNumber = specialist ? randomNumber(1, count) : false;
   const favorMissionNumber = favor ? randomNumber(1, count) : false;
-  // const specialMissionMissionNumber = specialMission
-  //   ? randomNumber(1, count)
-  //   : false;
 
-  for (i = 0; i < count; i++) {
+  const finalCount = cmdChoice ? count - 1 : count;
+
+  for (i = 0; i < finalCount; i++) {
     let missionType = randomKey(missions);
     let commandersFocus = false;
     let gmFocus = false;
@@ -211,12 +210,11 @@ const randomMission = (obj, commandersChoice) => {
 };
 
 const createMissions = () => {
-  // const cmdChoice = document.getElementById("commandersFocus").value
-  //   ? document.getElementById("commandersFocus").value
-  //   : false;
-  // const key = cmdChoice ? "6" : randomKey(missionCount);
-  const key = randomKey(missionCount);
-  const missions = randomMission(missionCount[key]);
+  const cmdChoice = document.getElementById("commandersFocus").value
+    ? document.getElementById("commandersFocus").value
+    : false;
+  const key = cmdChoice ? "6" : randomKey(missionCount);
+  const missions = randomMission(missionCount[key], cmdChoice);
 
   let template = "";
   missions.map((v) => {
@@ -247,8 +245,31 @@ const createMissions = () => {
     </div>
   </div></div>`;
   });
+
+  if (cmdChoice) {
+    template += `<div class="col"><div class="card">
+    <div class="card-body">
+      <h5 class="card-title text-uppercase">Special Mission!</h5>
+    </div>
+  </div></div>`;
+  }
+
   document.getElementById("missions").innerHTML = template;
 };
 
 const generateMissionsButton = document.getElementById("generateMissions");
 generateMissionsButton.addEventListener("click", createMissions);
+
+const commanderSpentIntelOnChange = () => {
+  if (commanderSpentIntelInput.checked == true) {
+    $("#commanderChooseType").collapse("show");
+  } else {
+    $("#commanderChooseType").collapse("hide");
+  }
+};
+
+const commanderSpentIntelInput = document.getElementById("commanderSpentIntel");
+commanderSpentIntelInput.addEventListener(
+  "change",
+  commanderSpentIntelOnChange
+);
