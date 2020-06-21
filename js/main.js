@@ -173,20 +173,14 @@ const randomKey = (obj) => {
 const randomMission = (obj, cmdChoice) => {
   const { count, specialist, favor, specialMission } = obj;
   let missionList = [];
-
-  if (specialMission && !cmdChoice) {
-    $("#chooseSpecialMissionType").modal("show");
-  }
+  let specialMissionHeader = "";
 
   const specialistMissionNumber = specialist ? randomNumber(1, count) : false;
   const favorMissionNumber = favor ? randomNumber(1, count) : false;
-
   const finalCount = cmdChoice ? count - 1 : count;
 
   for (i = 0; i < finalCount; i++) {
     let missionType = randomKey(missions);
-    let commandersFocus = false;
-    let gmFocus = false;
 
     const mission = missions[missionType];
 
@@ -202,12 +196,11 @@ const randomMission = (obj, cmdChoice) => {
       ...{ type: type },
       ...{ rewards: rewards },
       ...{ penalties: penalties },
-      ...{ commandersFocus: commandersFocus },
-      ...{ gmFocus: gmFocus },
       ...{
         specialist: specialistMissionNumber === i ? true : false,
       },
       ...{ favor: favorMissionNumber === i ? true : false },
+      ...{ specialMission: specialMission },
     };
   }
   return missionList;
@@ -244,10 +237,13 @@ const createMissions = () => {
   </div></div>`;
   });
 
-  if (cmdChoice) {
+  if (cmdChoice || v.specialMission) {
+    const header = cmdChoice
+      ? `Special ${cmdChoice} Mission!`
+      : `Choose a Special Mission!`;
     template += `<div class="col"><div class="card">
     <div class="card-body">
-      <h5 class="card-title text-uppercase">Special Mission!</h5>
+      <h5 class="card-title text-uppercase">${header}</h5>
     </div>
   </div></div>`;
   }
