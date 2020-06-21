@@ -174,6 +174,10 @@ const randomMission = (obj, cmdChoice) => {
   const { count, specialist, favor, specialMission } = obj;
   let missionList = [];
 
+  if (specialMission && !cmdChoice) {
+    $("#chooseSpecialMissionType").modal("show");
+  }
+
   const specialistMissionNumber = specialist ? randomNumber(1, count) : false;
   const favorMissionNumber = favor ? randomNumber(1, count) : false;
 
