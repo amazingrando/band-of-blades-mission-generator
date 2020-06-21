@@ -218,12 +218,6 @@ const createMissions = () => {
 
   let template = "";
   missions.map((v) => {
-    // const focus = v.commandersFocus
-    //   ? `<span class="badge badge-primary">Focus</span>`
-    //   : "";
-    // const gmFocus = v.gmFocus
-    //   ? `<span class="badge badge-danger">GM Choice</span>`
-    //   : "";
     const extraSpecialist = v.specialist
       ? `<br/>This mission requires another specialist. Perhaps a ${randomFromArray(
           specialistTypes
@@ -263,8 +257,13 @@ generateMissionsButton.addEventListener("click", createMissions);
 const commanderSpentIntelOnChange = () => {
   if (commanderSpentIntelInput.checked == true) {
     $("#commanderChooseType").collapse("show");
+    if (commanderSelectedMission.value == "") {
+      generateMissionsButton.disabled = true;
+    }
   } else {
     $("#commanderChooseType").collapse("hide");
+    generateMissionsButton.disabled = false;
+    commanderSelectedMission.value = "";
   }
 };
 
@@ -272,4 +271,18 @@ const commanderSpentIntelInput = document.getElementById("commanderSpentIntel");
 commanderSpentIntelInput.addEventListener(
   "change",
   commanderSpentIntelOnChange
+);
+
+const commanderSelectedMissionHandler = () => {
+  if (commanderSelectedMission.value == "") {
+    generateMissionsButton.disabled = true;
+  } else {
+    generateMissionsButton.disabled = false;
+  }
+};
+
+const commanderSelectedMission = document.getElementById("commandersFocus");
+commanderSelectedMission.addEventListener(
+  "change",
+  commanderSelectedMissionHandler
 );
