@@ -142,6 +142,8 @@ const missions = {
       "None.",
     ],
   },
+  commandersChoice: {},
+  gmChoice: {},
 };
 
 const favors = ["Holy", "Mystic", "Glory", "Knowledge", "Mercy", "Wild"];
@@ -173,10 +175,10 @@ const randomKey = (obj) => {
 const randomMission = (obj, cmdChoice) => {
   const { count, specialist, favor, specialMission } = obj;
   let missionList = [];
-  let specialMissionHeader = "";
 
   const specialistMissionNumber = specialist ? randomNumber(1, count) : false;
   const favorMissionNumber = favor ? randomNumber(1, count) : false;
+
   const finalCount = cmdChoice ? count - 1 : count;
 
   for (i = 0; i < finalCount; i++) {
@@ -184,24 +186,33 @@ const randomMission = (obj, cmdChoice) => {
 
     const mission = missions[missionType];
 
-    const type = mission.type[(mission.type.length * Math.random()) | 0];
-    const rewards =
-      mission.rewards[(mission.rewards.length * Math.random()) | 0];
-    const penalties =
-      mission.penalties[(mission.penalties.length * Math.random()) | 0];
-
-    missionList[i] = {
-      ...missionList,
-      ...{ missionType: missionType },
-      ...{ type: type },
-      ...{ rewards: rewards },
-      ...{ penalties: penalties },
-      ...{
-        specialist: specialistMissionNumber === i ? true : false,
-      },
-      ...{ favor: favorMissionNumber === i ? true : false },
-      ...{ specialMission: specialMission },
-    };
+    if (missionType == "gmChoice" || missionType == "commandersChoice") {
+      const choice = missionType == "gmChoice" ? "GM" : "Commander";
+      missionList[i] = {
+        ...missionList,
+        ...{ randomSpecialMission: true },
+        ...{ choice: choice },
+      };
+    } else {
+      const type = mission.type[(mission.type.length * Math.random()) | 0];
+      const rewards =
+        mission.rewards[(mission.rewards.length * Math.random()) | 0];
+      const penalties =
+        mission.penalties[(mission.penalties.length * Math.random()) | 0];
+      missionList[i] = {
+        ...missionList,
+        ...{ missionType: missionType },
+        ...{ type: type },
+        ...{ rewards: rewards },
+        ...{ penalties: penalties },
+        ...{
+          specialist: specialistMissionNumber === i ? true : false,
+        },
+        ...{ favor: favorMissionNumber === i ? true : false },
+        ...{ specialMission: specialMission },
+        ...{ choice: false },
+      };
+    }
   }
   return missionList;
 };
@@ -223,30 +234,41 @@ const createMissions = () => {
     const favor = v.favor
       ? `<br/>This mission gives ${randomFromArray(favors)} Favor.`
       : "";
-    template += `<div class="col"><div class="card">
-    <div class="card-body">
-      <h5 class="card-title text-uppercase">${v.missionType}</h5>
-      <p class="card-text">
-        <strong>Type:</strong> ${v.type} <br/>
-        <strong>Rewards:</strong> ${v.rewards}<br/>
-        <strong>Penalties:</strong> ${v.penalties}
-        ${extraSpecialist}
-        ${favor}
-      </p>
-    </div>
-  </div></div>`;
+    if (v.randomSpecialMission) {
+      template += `<div class="col"><div class="card">
+          <div class="card-body">
+            <h5 class="card-title text-uppercase">Special Mission!</h5>
+            <p class="card-text">
+            ${v.choice} gets to choose the mission type.
+            </p>
+            </div>
+        </div></div>`;
+    } else {
+      template += `<div class="col"><div class="card">
+      <div class="card-body">
+        <h5 class="card-title text-uppercase">${v.missionType}</h5>
+        <p class="card-text">
+          <strong>Type:</strong> ${v.type} <br/>
+          <strong>Rewards:</strong> ${v.rewards}<br/>
+          <strong>Penalties:</strong> ${v.penalties}
+          ${extraSpecialist}
+          ${favor}
+        </p>
+      </div>
+    </div></div>`;
+    }
   });
 
-  if (cmdChoice || v.specialMission) {
-    const header = cmdChoice
-      ? `Special ${cmdChoice} Mission!`
-      : `Choose a Special Mission!`;
-    template += `<div class="col"><div class="card">
-    <div class="card-body">
-      <h5 class="card-title text-uppercase">${header}</h5>
-    </div>
-  </div></div>`;
-  }
+  // if (cmdChoice || hasSpecialMission) {
+  //   const header = cmdChoice
+  //     ? `Special ${cmdChoice} Mission!`
+  //     : `Choose a Special Mission!`;
+  //   template += `<div class="col"><div class="card">
+  //   <div class="card-body">
+  //     <h5 class="card-title text-uppercase">Special Mission!</h5>
+  //   </div>
+  // </div></div>`;
+  // }
 
   document.getElementById("missions").innerHTML = template;
 };
