@@ -1,176 +1,12 @@
-const missionCount = {
-  1: {
-    count: 3,
-    specialist: false,
-    favor: false,
-    specialMission: false,
-  },
-  2: {
-    count: 3,
-    specialist: false,
-    favor: false,
-    specialMission: false,
-  },
-  3: {
-    count: 3,
-    specialist: true,
-    favor: false,
-    specialMission: false,
-  },
-  4: {
-    count: 2,
-    specialist: false,
-    favor: false,
-    specialMission: false,
-  },
-  5: {
-    count: 3,
-    specialist: false,
-    favor: true,
-    specialMission: false,
-  },
-  6: {
-    count: 3,
-    specialist: false,
-    favor: false,
-    specialMission: true,
-  },
-};
-
-const missions = {
-  assualt: {
-    type: [
-      "People.",
-      "The Wild.",
-      "Undead.",
-      "Undead.",
-      "Powerful Undead.",
-      "Powerful Undead.",
-    ],
-    rewards: [
-      "+2 Morale.",
-      "+3 Morale.",
-      "+4 Morale.",
-      "+2 Morale. +1 Support.",
-      "+2 Morale. +1 Intel.",
-      "+2 Morale. -1 Time.",
-    ],
-    penalties: [
-      "+1 Pressure. +1 Time.",
-      "+1 Time.",
-      "-1 Supply.",
-      "+1 Pressure.",
-      "+1 Pressure.",
-      "+1 Pressure.",
-    ],
-  },
-  recon: {
-    type: [
-      "Area Recon.",
-      "Route Recon.",
-      "Troop Recon.",
-      "Infiltration.",
-      "Exfiltration.",
-      "Pick above + Danger.",
-    ],
-    rewards: [
-      "+2 Intel.",
-      "+2 Intel.",
-      "Asset. +1 Intel.",
-      "Asset or Troops. +1 Intel.",
-      "+1 Intel. -1 Time.",
-      "+3 Intel.",
-    ],
-    penalties: [
-      "+1 Time.",
-      "2 Deaths.",
-      "1 Death.",
-      "+1 Pressure.",
-      "+1 Pressure.",
-      "None.",
-    ],
-  },
-  religious: {
-    type: [
-      "Escort.",
-      "Cleansing.",
-      "Defense.",
-      "Unearth.",
-      "Pick Above + Favor.",
-      "Pick Above + Favor.",
-    ],
-    rewards: [
-      "-1 Time. + 2 xp.",
-      "+2 Morale. +10 Points.",
-      "+1 Intel. +2 Morale.",
-      "Fine Asset.",
-      "Exceptional Asset.",
-      "Specialist.",
-    ],
-    penalties: [
-      "-1 Morale. +1 Pressure.",
-      "+1 Pressure.",
-      "+1 Pressure.",
-      "-1 Morale.",
-      "-1 Morale.",
-      "None.",
-    ],
-  },
-  supply: {
-    type: [
-      "Scrounge or Trade.",
-      "Scrounge or Trade.",
-      "Rescue Supplies.",
-      "Rescue Supplies.",
-      "Mercenary Work.",
-      "Mercenary Work.",
-    ],
-    rewards: [
-      "Asset. +1 Supply.",
-      "Asset. +1 Supply.",
-      "+2 Supply.",
-      "Asset. +2 Supply.",
-      "+3 Supply.",
-      "+3 Supply.",
-    ],
-    penalties: [
-      "-1 Morale. -1 Supply.",
-      "-1 Supply.",
-      "-1 Morale.",
-      "-1 Morale",
-      "None.",
-      "None.",
-    ],
-  },
-  commandersChoice: {},
-  gmChoice: {},
-};
-
-const favors = ["Holy", "Mystic", "Glory", "Knowledge", "Mercy", "Wild"];
-
-const specialistTypes = [
-  "Heavy",
-  "Medic",
-  "Scout",
-  "Sniper",
-  "Officer",
-  "Alchemist or Mercy",
-];
-
-const randomNumber = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max + 1);
-  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-};
-
-const randomFromArray = (array) => {
-  return array[Math.floor(Math.random() * array.length)];
-};
-
-const randomKey = (obj) => {
-  var keys = Object.keys(obj);
-  return keys[(keys.length * Math.random()) << 0];
-};
+import { missionCount } from "./modules/missionCount.js";
+import { missions } from "./modules/missions.js";
+import { favors } from "./modules/favors.js";
+import { specialistTypes } from "./modules/specialistTypes.js";
+import {
+  randomNumber,
+  randomFromArray,
+  randomKey,
+} from "./modules/utilities.js";
 
 const randomMission = (obj, cmdChoice) => {
   const { count, specialist, favor, specialMission } = obj;
@@ -181,7 +17,7 @@ const randomMission = (obj, cmdChoice) => {
 
   const finalCount = cmdChoice ? count - 1 : count;
 
-  for (i = 0; i < finalCount; i++) {
+  for (let i = 0; i < finalCount; i++) {
     let missionType = randomKey(missions);
 
     const mission = missions[missionType];
@@ -259,52 +95,12 @@ const createMissions = () => {
     }
   });
 
-  // if (cmdChoice || hasSpecialMission) {
-  //   const header = cmdChoice
-  //     ? `Special ${cmdChoice} Mission!`
-  //     : `Choose a Special Mission!`;
-  //   template += `<div class="col"><div class="card">
-  //   <div class="card-body">
-  //     <h5 class="card-title text-uppercase">Special Mission!</h5>
-  //   </div>
-  // </div></div>`;
-  // }
-
   document.getElementById("missions").innerHTML = template;
 };
 
 const generateMissionsButton = document.getElementById("generateMissions");
 generateMissionsButton.addEventListener("click", createMissions);
 
-const commanderSpentIntelOnChange = () => {
-  if (commanderSpentIntelInput.checked == true) {
-    $("#commanderChooseType").collapse("show");
-    if (commanderSelectedMission.value == "") {
-      generateMissionsButton.disabled = true;
-    }
-  } else {
-    $("#commanderChooseType").collapse("hide");
-    generateMissionsButton.disabled = false;
-    commanderSelectedMission.value = "";
-  }
-};
-
 const commanderSpentIntelInput = document.getElementById("commanderSpentIntel");
-commanderSpentIntelInput.addEventListener(
-  "change",
-  commanderSpentIntelOnChange
-);
-
-const commanderSelectedMissionHandler = () => {
-  if (commanderSelectedMission.value == "") {
-    generateMissionsButton.disabled = true;
-  } else {
-    generateMissionsButton.disabled = false;
-  }
-};
 
 const commanderSelectedMission = document.getElementById("commandersFocus");
-commanderSelectedMission.addEventListener(
-  "change",
-  commanderSelectedMissionHandler
-);
