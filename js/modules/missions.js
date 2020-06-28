@@ -1,5 +1,5 @@
 export const missions = {
-  assualt: {
+  assault: {
     type: [
       "People.",
       "The Wild.",

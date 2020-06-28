@@ -5,7 +5,10 @@ const randomNumber = (min, max) => {
 };
 
 const randomFromArray = (array) => {
-  return array[Math.floor(Math.random() * array.length)];
+  console.log(`array.length is ${array.length}`);
+  const value = Math.floor(Math.random() * array.length);
+  console.log(`value is ${value}`);
+  return array[value];
 };
 
 const randomKey = (obj) => {

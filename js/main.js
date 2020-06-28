@@ -1,57 +1,12 @@
 import { missionCount } from "./modules/missionCount.js";
 import { missions } from "./modules/missions.js";
-import { favors } from "./modules/favors.js";
-import { specialistTypes } from "./modules/specialistTypes.js";
+import { favors, findFavor } from "./modules/favors.js";
+import { specialistTypes, findSpecialist } from "./modules/specialistTypes.js";
 import {
   randomNumber,
   randomFromArray,
   randomKey,
 } from "./modules/utilities.js";
-
-const randomMission = (obj, cmdChoice) => {
-  const { count, specialist, favor, specialMission } = obj;
-  let missionList = [];
-
-  const specialistMissionNumber = specialist ? randomNumber(1, count) : false;
-  const favorMissionNumber = favor ? randomNumber(1, count) : false;
-
-  const finalCount = cmdChoice ? count - 1 : count;
-
-  for (let i = 0; i < finalCount; i++) {
-    let missionType = randomKey(missions);
-
-    const mission = missions[missionType];
-
-    if (missionType == "gmChoice" || missionType == "commandersChoice") {
-      const choice = missionType == "gmChoice" ? "GM" : "Commander";
-      missionList[i] = {
-        ...missionList,
-        ...{ randomSpecialMission: true },
-        ...{ choice: choice },
-      };
-    } else {
-      const type = mission.type[(mission.type.length * Math.random()) | 0];
-      const rewards =
-        mission.rewards[(mission.rewards.length * Math.random()) | 0];
-      const penalties =
-        mission.penalties[(mission.penalties.length * Math.random()) | 0];
-      missionList[i] = {
-        ...missionList,
-        ...{ missionType: missionType },
-        ...{ type: type },
-        ...{ rewards: rewards },
-        ...{ penalties: penalties },
-        ...{
-          specialist: specialistMissionNumber === i ? true : false,
-        },
-        ...{ favor: favorMissionNumber === i ? true : false },
-        ...{ specialMission: specialMission },
-        ...{ choice: false },
-      };
-    }
-  }
-  return missionList;
-};
 
 const availableMissionTypeGenerator = () => {
   let availableMissionArray = Array.from(availableMissions);
@@ -67,61 +22,77 @@ const availableMissionTypeGenerator = () => {
 };
 
 const singleMission = (types) => {
-  const type = randomFromArray(types);
+  const kind = randomFromArray(types);
+  const type =
+    missions[kind].type[(missions[kind].type.length * Math.random()) | 0];
+  const rewards =
+    missions[kind].rewards[(missions[kind].rewards.length * Math.random()) | 0];
+  const penalties =
+    missions[kind].penalties[
+      (missions[kind].penalties.length * Math.random()) | 0
+    ];
+  return { kind, type, rewards, penalties };
 };
 
 const createMissions = () => {
   const availableMissionTypes = availableMissionTypeGenerator();
   const intelSpent = spendIntel.checked;
-  const missionSetup = intelSpent ? 6 : randomKey(missionCount);
-  const numberOfMissions = missionCount[missionSetup].count;
-  const newMission = {};
+  const selectedMissionCount = randomKey(missionCount);
+  const specialMission = missionCount[selectedMissionCount].specialMission;
+  const missionSetup = intelSpent || specialMission ? 6 : selectedMissionCount;
+  const numberOfMissions =
+    missionSetup == 6 ? 2 : missionCount[selectedMissionCount].count;
 
-  for (let i = 0; i < numberOfMissions; i++) {
-    newMission[i] = singleMission(availableMissionTypes, intelSpent);
+  const specialist = findSpecialist(
+    missionCount[selectedMissionCount].specialist,
+    numberOfMissions
+  );
+  const favor = findFavor(
+    missionCount[selectedMissionCount].favor,
+    numberOfMissions
+  );
+
+  const missions = {};
+
+  if (specialMission || intelSpent) {
+    missions["specialMission"] = true;
   }
-  console.log(newMission);
 
-  /* =================================== */
+  for (let i = 1; i < numberOfMissions + 1; i++) {
+    missions[i] = singleMission(availableMissionTypes);
+    missions[i]["specialist"] =
+      specialist.number == i ? specialist.type : false;
+    missions[i]["favor"] = favor.number == i ? favor.type : false;
+  }
 
-  const cmdChoice = document.getElementById("commandersFocus").value
-    ? document.getElementById("commandersFocus").value
-    : false;
-  const key = cmdChoice ? "6" : randomKey(missionCount);
-  const missions = randomMission(missionCount[key], cmdChoice);
+  return missions;
+};
+
+const addMissions = () => {
+  const missionsHold = createMissions();
+  const missions = Object.keys(missionsHold).map((key) => missionsHold[key]);
 
   let template = "";
+
   missions.map((v) => {
-    const extraSpecialist = v.specialist
-      ? `<br/>This mission requires another specialist. Perhaps a ${randomFromArray(
-          specialistTypes
-        )}?`
-      : "";
-    const favor = v.favor
-      ? `<br/>This mission gives ${randomFromArray(favors)} Favor.`
-      : "";
-    if (v.randomSpecialMission) {
-      template += `<div class="col"><div class="card">
-          <div class="card-body">
-            <h5 class="card-title text-uppercase">Special Mission!</h5>
-            <p class="card-text">
-            ${v.choice} gets to choose the mission type.
-            </p>
-            </div>
-        </div></div>`;
+    if (v === true) {
+      template += "Specialist mission!";
     } else {
+      const specialist = v.specialist
+        ? `<p>This mission requires a specialist. Maybe a ${v.specialist}</p>`
+        : "";
+      const favor = v.favor ? `<p>This mission gives ${v.favor} favor</p>` : "";
       template += `<div class="col"><div class="card">
-      <div class="card-body">
-        <h5 class="card-title text-uppercase">${v.missionType}</h5>
-        <p class="card-text">
-          <strong>Type:</strong> ${v.type} <br/>
-          <strong>Rewards:</strong> ${v.rewards}<br/>
-          <strong>Penalties:</strong> ${v.penalties}
-          ${extraSpecialist}
-          ${favor}
-        </p>
-      </div>
-    </div></div>`;
+        <div class="card-body">
+          <h5 class="card-title text-uppercase">${v.kind}</h5>
+          <p class="card-text">
+            <strong>Type:</strong> ${v.type} <br/>
+            <strong>Rewards:</strong> ${v.rewards}<br/>
+            <strong>Penalties:</strong> ${v.penalties}
+            ${favor}${specialist}
+          </p>
+        </div>
+      </div></div>`;
     }
   });
 
@@ -135,4 +106,4 @@ const availableMissions = document.querySelectorAll(
   "[data-available-mission-type]"
 );
 
-generateMissionsButton.addEventListener("click", createMissions);
+generateMissionsButton.addEventListener("click", addMissions);
