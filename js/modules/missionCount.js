@@ -30,7 +30,7 @@ export const missionCount = {
     specialMission: false,
   },
   6: {
-    count: 3,
+    count: 2, // specialMission adds a third.
     specialist: false,
     favor: false,
     specialMission: true,

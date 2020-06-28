@@ -53,7 +53,37 @@ const randomMission = (obj, cmdChoice) => {
   return missionList;
 };
 
+const availableMissionTypeGenerator = () => {
+  let availableMissionArray = Array.from(availableMissions);
+  availableMissionArray = availableMissionArray.map((mission) => {
+    if (mission.checked == true) {
+      return mission.dataset.availableMissionType;
+    }
+  });
+  availableMissionArray = availableMissionArray.filter(
+    (mission) => typeof mission !== "undefined"
+  );
+  return availableMissionArray;
+};
+
+const singleMission = (types) => {
+  const type = randomFromArray(types);
+};
+
 const createMissions = () => {
+  const availableMissionTypes = availableMissionTypeGenerator();
+  const intelSpent = spendIntel.checked;
+  const missionSetup = intelSpent ? 6 : randomKey(missionCount);
+  const numberOfMissions = missionCount[missionSetup].count;
+  const newMission = {};
+
+  for (let i = 0; i < numberOfMissions; i++) {
+    newMission[i] = singleMission(availableMissionTypes, intelSpent);
+  }
+  console.log(newMission);
+
+  /* =================================== */
+
   const cmdChoice = document.getElementById("commandersFocus").value
     ? document.getElementById("commandersFocus").value
     : false;
@@ -99,8 +129,10 @@ const createMissions = () => {
 };
 
 const generateMissionsButton = document.getElementById("generateMissions");
-generateMissionsButton.addEventListener("click", createMissions);
-
-const commanderSpentIntelInput = document.getElementById("commanderSpentIntel");
-
+const spendIntel = document.getElementById("commanderSpentIntel");
 const commanderSelectedMission = document.getElementById("commandersFocus");
+const availableMissions = document.querySelectorAll(
+  "[data-available-mission-type]"
+);
+
+generateMissionsButton.addEventListener("click", createMissions);
