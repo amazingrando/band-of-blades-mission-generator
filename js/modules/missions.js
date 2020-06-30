@@ -1,4 +1,6 @@
-export const missions = {
+import { randomNumber } from "./utilities";
+
+const missions = {
   assault: {
     type: [
       "People.",
@@ -103,4 +105,55 @@ export const missions = {
       "None.",
     ],
   },
+};
+
+const availableMissionTypeGenerator = () => {
+  const availableMissions = document.querySelectorAll(
+    "[data-available-mission-type]"
+  );
+  let availableMissionArray = Array.from(availableMissions);
+  availableMissionArray = availableMissionArray.map((mission) => {
+    if (mission.checked == true) {
+      return mission.dataset.availableMissionType;
+    }
+  });
+  availableMissionArray = availableMissionArray.filter(
+    (mission) => typeof mission !== "undefined"
+  );
+  return availableMissionArray;
+};
+
+const hasSpecialMission = (value) => {
+  const spendIntel = document.getElementById("commanderSpentIntel");
+  if (value) {
+    return { isSpecialMission: true };
+  } else if (spendIntel.checked) {
+    return { isSpecialMission: true };
+  } else {
+    return { isSpecialMission: false };
+  }
+};
+
+const gatherSpecialMissions = () => {
+  const commandersChoice = document.getElementById("commandersFocus").value;
+  const gmChoice = document.getElementById("GMFocus").value;
+
+  const d6 = randomNumber(1, 6);
+  let kind = "";
+  let choice = "";
+  if (d6 == 5 && commandersChoice != "") {
+    kind = commandersChoice;
+    choice = "commander";
+  } else if (d6 == 6 && gmChoice != "") {
+    kind = gmChoice;
+    choice = "gm";
+  }
+  return { kind, choice };
+};
+
+export {
+  missions,
+  availableMissionTypeGenerator,
+  hasSpecialMission,
+  gatherSpecialMissions,
 };
