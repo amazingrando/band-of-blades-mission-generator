@@ -5,9 +5,7 @@ const randomNumber = (min, max) => {
 };
 
 const randomFromArray = (array) => {
-  console.log(`array.length is ${array.length}`);
   const value = Math.floor(Math.random() * array.length);
-  console.log(`value is ${value}`);
   return array[value];
 };
 
