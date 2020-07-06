@@ -1,0 +1,113 @@
+:root {
+  --color-brown: #1e1310;
+  --color-gold: #a48d67;
+  --font-serif: "IM Fell English", "Georgia", serif;
+  --font-main: var(--font-serif);
+}
+
+@font-face {
+  font-family: "MAJOR GUILTY Regular";
+  font-style: normal;
+  font-weight: normal;
+  src: local("../fonts/MAJOR GUILTY Regular"),
+    url("../fonts/MAJOR ___.woff") format("woff");
+}
+
+body {
+  background: url("../images/wood.jpg") top left no-repeat;
+  background-size: cover;
+  color: var(--color-brown);
+  font-family: var(--font-main);
+}
+
+.parchment {
+  background: url("../images/parchment.png") -20px -100px no-repeat;
+  box-shadow: 0px 2.76726px 2.21381px rgba(0, 0, 0, 0.132138),
+    0px 6.6501px 5.32008px rgba(0, 0, 0, 0.18983),
+    0px 12.5216px 10.0172px rgba(0, 0, 0, 0.235),
+    0px 22.3363px 17.869px rgba(0, 0, 0, 0.28017),
+    0px 41.7776px 33.4221px rgba(0, 0, 0, 0.337862),
+    0px 100px 80px rgba(0, 0, 0, 0.47);
+  position: relative;
+}
+
+.parchment > * {
+  z-index: 1;
+}
+
+.parchment::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-gold);
+  opacity: 0.5;
+}
+
+.footer {
+  background: var(--color-brown);
+  color: white;
+}
+
+.label--modified {
+  font-size: 1.5rem;
+  margin-bottom: 0;
+}
+
+.custom-select {
+  background-color: rgba(255, 255, 255, 0.6);
+  border: none;
+}
+
+.custom-icon-control {
+}
+
+.custom-icon-control-input {
+  display: none;
+}
+
+.custom-icon-control-label {
+  font-size: 2rem;
+  font-family: "MAJOR GUILTY Regular", sans-serif;
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  column-gap: 1rem;
+  align-items: center;
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.custom-icon-control-input:checked ~ .custom-icon-control-label {
+  text-decoration: none;
+  opacity: 1;
+}
+
+.custom-icon-control-label::before {
+  content: "";
+  display: block;
+  transition: opacity 0.15s;
+  justify-self: center;
+}
+
+.custom-icon-control--assault::before {
+  background: url(../images/assualt.svg) no-repeat top left;
+  width: 45px;
+  height: 42px;
+}
+
+.custom-icon-control--recon::before {
+  background: url(../images/recon.svg) no-repeat top left;
+  width: 47px;
+  height: 37px;
+}
+
+.custom-icon-control--religious::before {
+  background: url(../images/religious.svg) no-repeat top left;
+  width: 54px;
+  height: 36px;
+}
+
+.custom-icon-control--supply::before {
+  background: url(../images/supply.svg) no-repeat top left;
+  width: 43px;
+  height: 42px;
+}

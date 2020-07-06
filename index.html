@@ -14,49 +14,49 @@
 
 		<link rel="manifest" href="site.webmanifest">
 		<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/main.css">
 		<meta name="theme-color" content="#fafafa">
 	</head>
 
 	<body>
 		<div class="container">
 
-			<div class="row">
-				<div class="col-6 mt-5">
-					<h1>Band of Blades
-						<br>Mission Generator
-					</h1>
+			<div class="row justify-content-center parchment pb-5">
+				<div class="col-11 mt-5">
+					<h1>Band of Blades Mission Generator</h1>
 					<div class="row mt-5">
 						<div class="col">
-							<h2 class="h3 mb-3">Choose all available mission types.</h2>
+							<p class="h4 mb-3">Available mission types:</p>
 							<div class="row">
-								<div class="col-3">
-									<div class="form-group form-check">
-										<input type="checkbox" class="form-check-input" data-available-mission-type="assault" id="assault" checked>
-										<label class="form-check-label" for="assault">Assault</label>
-									</div>
-									<div class="form-group form-check">
-										<input type="checkbox" class="form-check-input" data-available-mission-type="recon" id="recon" checked>
-										<label class="form-check-label" for="recon">Recon</label>
-									</div>
-								</div>
-								<div class="col-3">
-									<div class="form-group form-check">
-										<input type="checkbox" class="form-check-input" data-available-mission-type="religious" id="religious" checked>
-										<label class="form-check-label" for="religious">Religious</label>
-									</div>
-									<div class="form-group form-check">
-										<input type="checkbox" class="form-check-input" data-available-mission-type="supply" id="supply" checked>
-										<label class="form-check-label" for="supply">Supply</label>
-									</div>
-								</div>
+                <div class="custom-icon-control col">
+                  <input type="checkbox" class="custom-icon-control-input" data-available-mission-type="assault" id="assault" checked>
+                  <label class="custom-icon-control-label custom-icon-control--assault" for="assault">Assault</label>
+                </div>
+
+                <div class="custom-icon-control col">
+                  <input type="checkbox" class="custom-icon-control-input" data-available-mission-type="recon" id="recon" checked>
+                  <label class="custom-icon-control-label custom-icon-control--recon" for="recon">Recon</label>
+                </div>
+
+                <div class="custom-icon-control col">
+                  <input type="checkbox" class="custom-icon-control-input" data-available-mission-type="religious" id="religious" checked>
+                  <label class="custom-icon-control-label custom-icon-control--religious" for="religious">Religious</label>
+                </div>
+
+                <div class="custom-icon-control col">
+                  <input type="checkbox" class="custom-icon-control-input" data-available-mission-type="supply" id="supply" checked>
+                  <label class="custom-icon-control-label custom-icon-control--supply" for="supply">Supply</label>
+                </div>
 							</div>
 						</div>
 					</div>
+
 					<div class="row mt-5">
-						<div class="col">
+						<div class="col-md-4">
 							<div class="form-group" id="commanderChooseType">
-								<label for="commandersFocus">Commander's focus</label>
-								<select class="form-control" name="commandersFocus" id="commandersFocus">
+								<label for="commandersFocus" class="label--modified">Commander's focus</label>
+								<select class="custom-select" name="commandersFocus" id="commandersFocus">
 									<option value="">Choose One:</option>
 									<option value="assault">Assault</option>
 									<option value="recon">Recon</option>
@@ -68,20 +68,22 @@
 								<input type="checkbox" class="custom-control-input" id="commanderSpentIntel">
 								<label class="custom-control-label" for="commanderSpentIntel">The Commander has spent Intel for a Special Mission.</label>
 							</div>
-							<div class="form-group" id="GMChooseType">
-								<label for="GMFocus">GM's focus</label>
-								<select class="form-control" name="GMFocus" id="GMFocus">
-									<option value="">Choose One:</option>
-									<option value="assault">Assault</option>
-									<option value="recon">Recon</option>
-									<option value="religious">Religious</option>
-									<option value="supply">Supply</option>
-								</select>
-							</div>
 						</div>
+            <div class="col-md-4">
+              <div class="form-group" id="GMChooseType">
+                  <label for="GMFocus" class="label--modified">GM's focus</label>
+                  <select class="custom-select" name="GMFocus" id="GMFocus">
+                    <option value="">Choose One:</option>
+                    <option value="assault">Assault</option>
+                    <option value="recon">Recon</option>
+                    <option value="religious">Religious</option>
+                    <option value="supply">Supply</option>
+                  </select>
+                </div>
+            </div>
 					</div>
 
-					<div class="row mt-5 ">
+					<div class="row">
 						<div class="col">
 							<button class="btn btn-primary mt-2" id="generateMissions">Generate Missions</button>
 						</div>
@@ -90,7 +92,12 @@
 				</div>
 			</div>
 			<div class="row mt-5" id="missions"></div>
+
 		</div>
+    <footer class="container-fluid footer px-5 pt-3 pb-5">
+    <div class="row">
+    <div class="col">Footer!</div></div>
+    </footer>
 
 		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
