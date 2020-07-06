@@ -8,11 +8,7 @@ import {
 import { findFavor } from "./modules/favors.js";
 import { findSpecialist } from "./modules/specialistTypes.js";
 import { templateSetup } from "./modules/template.js";
-import {
-  randomNumber,
-  randomFromArray,
-  randomKey,
-} from "./modules/utilities.js";
+import { randomFromArray, randomKey } from "./modules/utilities.js";
 
 const singleMission = (types, kind, choice) => {
   if (kind == "") {

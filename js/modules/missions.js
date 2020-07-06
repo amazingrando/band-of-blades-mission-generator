@@ -1,4 +1,4 @@
-import { randomNumber } from "./utilities";
+import { randomNumber } from "./utilities.js";
 
 const missions = {
   assault: {

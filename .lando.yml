@@ -1,0 +1,4 @@
+name: missions
+recipe: lamp
+config:
+  webroot: .

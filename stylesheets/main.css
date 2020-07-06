@@ -1,6 +1,7 @@
 :root {
   --color-brown: #1e1310;
   --color-gold: #a48d67;
+  --color-orange: #ff9b00;
   --font-serif: "IM Fell English", "Georgia", serif;
   --font-main: var(--font-serif);
 }
@@ -89,7 +90,7 @@ body {
 }
 
 .custom-icon-control--assault::before {
-  background: url(../images/assualt.svg) no-repeat top left;
+  background: url(../images/assault.svg) no-repeat top left;
   width: 45px;
   height: 42px;
 }
@@ -110,4 +111,40 @@ body {
   background: url(../images/supply.svg) no-repeat top left;
   width: 43px;
   height: 42px;
+}
+
+.btn-primary {
+  background-color: var(--color-brown);
+  border-color: var(--color-brown);
+  font-size: 1.5rem;
+  font-style: italic;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  transform: scale(1);
+  transition: transform 0.15s;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-brown);
+  border-color: var(--color-brown);
+  transform: scale(1.2);
+}
+
+.card--parchment {
+  background-color: transparent;
+  border-radius: 0;
+  background: url("../images/paper.png") no-repeat top left;
+  background-size: 100% 100%;
+  padding-right: 2rem;
+}
+
+.card--parchment .card-title {
+  font-family: "MAJOR GUILTY Regular", sans-serif;
+  font-size: 3rem;
+  font-weight: normal;
+  line-height: 1;
+}
+
+.card--parchment .card-body {
+  padding: 2rem 2rem 6rem;
 }
