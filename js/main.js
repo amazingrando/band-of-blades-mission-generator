@@ -78,7 +78,9 @@ const addMissions = () => {
     htmlToInsert += templateSetup(v);
   });
 
-  document.getElementById("missions").innerHTML = htmlToInsert;
+  const missionSection = document.getElementById("missions");
+
+  missionSection.innerHTML = htmlToInsert;
 };
 
 const generateMissionsButton = document.getElementById("generateMissions");

@@ -22,7 +22,7 @@ body {
 }
 
 .parchment {
-  background: url("../images/parchment.png") -20px -100px no-repeat;
+  background: url("../images/parchment.png") no-repeat;
   box-shadow: 0px 2.76726px 2.21381px rgba(0, 0, 0, 0.132138),
     0px 6.6501px 5.32008px rgba(0, 0, 0, 0.18983),
     0px 12.5216px 10.0172px rgba(0, 0, 0, 0.235),
@@ -30,9 +30,10 @@ body {
     0px 41.7776px 33.4221px rgba(0, 0, 0, 0.337862),
     0px 100px 80px rgba(0, 0, 0, 0.47);
   position: relative;
+  background-size: cover;
 }
 
-.parchment>* {
+.parchment > * {
   z-index: 1;
 }
 
@@ -49,6 +50,10 @@ body {
   color: white;
 }
 
+.footer p {
+  opacity: 0.7;
+}
+
 .label--modified {
   font-size: 1.5rem;
   margin-bottom: 0;
@@ -59,7 +64,8 @@ body {
   border: none;
 }
 
-.custom-icon-control {}
+.custom-icon-control {
+}
 
 .custom-icon-control-input {
   display: none;
@@ -76,7 +82,7 @@ body {
   opacity: 0.5;
 }
 
-.custom-icon-control-input:checked~.custom-icon-control-label {
+.custom-icon-control-input:checked ~ .custom-icon-control-label {
   text-decoration: none;
   opacity: 1;
 }
@@ -146,4 +152,34 @@ body {
 
 .card--parchment .card-body {
   padding: 2rem 2rem 6rem;
+}
+
+.card--parchment .card-text {
+  margin-left: 30px;
+}
+
+.card-text .fas {
+  width: 20px;
+  text-align: center;
+  float: left;
+  margin-left: -25px;
+  top: 2px;
+  position: relative;
+}
+
+.book-cover {
+  margin-top: 4rem;
+  max-width: 400px;
+}
+
+.page-title {
+  font-size: 3rem;
+  font-style: italic;
+  line-height: 1;
+}
+
+@media screen and (min-width: 768px) {
+  .page-title {
+    font-size: 5rem;
+  }
 }
