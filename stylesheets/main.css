@@ -22,7 +22,7 @@ body {
 }
 
 .parchment {
-  background: url("../images/parchment.png") no-repeat;
+  background: url("../images/parchment.jpg") no-repeat;
   box-shadow: 0px 2.76726px 2.21381px rgba(0, 0, 0, 0.132138),
     0px 6.6501px 5.32008px rgba(0, 0, 0, 0.18983),
     0px 12.5216px 10.0172px rgba(0, 0, 0, 0.235),
@@ -40,7 +40,10 @@ body {
 .parchment::after {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background: var(--color-gold);
   opacity: 0.5;
 }
