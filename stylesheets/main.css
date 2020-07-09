@@ -11,7 +11,7 @@
   font-style: normal;
   font-weight: normal;
   src: local("../fonts/MAJOR GUILTY Regular"),
-    url("../fonts/MAJOR ___.woff") format("woff");
+    url("../fonts/MAJOR.woff") format("woff");
 }
 
 body {
@@ -32,7 +32,7 @@ body {
   position: relative;
 }
 
-.parchment > * {
+.parchment>* {
   z-index: 1;
 }
 
@@ -59,8 +59,7 @@ body {
   border: none;
 }
 
-.custom-icon-control {
-}
+.custom-icon-control {}
 
 .custom-icon-control-input {
   display: none;
@@ -77,7 +76,7 @@ body {
   opacity: 0.5;
 }
 
-.custom-icon-control-input:checked ~ .custom-icon-control-label {
+.custom-icon-control-input:checked~.custom-icon-control-label {
   text-decoration: none;
   opacity: 1;
 }

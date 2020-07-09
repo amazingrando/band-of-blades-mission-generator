@@ -18,8 +18,10 @@ export const templateSetup = (v) => {
       <span class="d-block mt-1">${v.kind} ${choice}</span>
     </h5>
     <p class="card-text">
-    <strong>Type:</strong> ${v.type} <br/>
-    <strong>Rewards:</strong> ${v.rewards}<br/>
+      <i class="fas fa-sword"></i>
+      <strong>Type:</strong> ${v.type}
+    </p>
+    <p><strong>Rewards:</strong> ${v.rewards}<br/>
     <strong>Penalties:</strong> ${v.penalties}
     ${favor}${specialist}
     </p>
