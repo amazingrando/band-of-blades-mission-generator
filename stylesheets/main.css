@@ -2,6 +2,7 @@
   --color-brown: #1e1310;
   --color-gold: #a48d67;
   --color-orange: #ff9b00;
+  --color-red: #a42603;
   --font-serif: "IM Fell English", "Georgia", serif;
   --font-main: var(--font-serif);
 }
@@ -68,6 +69,11 @@ body {
 }
 
 .custom-icon-control {
+  transition: all 0.15s;
+}
+
+.custom-icon-control:hover {
+  color: var(--color-red);
 }
 
 .custom-icon-control-input {
