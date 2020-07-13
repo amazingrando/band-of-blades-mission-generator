@@ -20,6 +20,9 @@ body {
   background-size: cover;
   color: var(--color-brown);
   font-family: var(--font-main);
+  display: flex;
+  flex-flow: column nowrap;
+  min-height: 100vh;
 }
 
 .parchment {
@@ -34,7 +37,7 @@ body {
   background-size: cover;
 }
 
-.parchment > * {
+.parchment>* {
   z-index: 1;
 }
 
@@ -52,6 +55,7 @@ body {
 .footer {
   background: var(--color-brown);
   color: white;
+  margin-top: auto;
 }
 
 .footer p {
@@ -91,7 +95,7 @@ body {
   opacity: 0.5;
 }
 
-.custom-icon-control-input:checked ~ .custom-icon-control-label {
+.custom-icon-control-input:checked~.custom-icon-control-label {
   text-decoration: none;
   opacity: 1;
 }
